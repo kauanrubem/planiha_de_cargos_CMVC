@@ -1,0 +1,33 @@
+/* ---------- GERAL ---------- */
+  
+  /* ---------- TITULOS ---------- */
+  h1, h2, h3 {
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  
+  /* ---------- GRÁFICOS EM CARDS ---------- */
+.card {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    background-color: white;
+    padding: 10px;
+    margin-bottom: 10px; /* <- espaçamento entre os cards */
+  }
+
+  .fixed-radio-items {
+    position: fixed;    /* Fixa o RadioItems na tela */
+    top: 20px;             /* Coloca o componente no topo da tela */
+    left: 20px;         /* Distância da esquerda */
+    z-index: 1000;      /* Garante que o RadioItems fique sobre outros elementos */
+    width: 200px;       /* Ajuste a largura conforme necessário (equivalente ao sm=2) */
+    height: 96vh;      /* A altura do card será igual à altura da tela */
+    padding: 20px;      /* Ajuste o preenchimento dentro do RadioItems */
+    margin: 0;          /* Remove margem externa */
+    background-color: #ffffff; /* Cor de fundo do RadioItems */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para destacar o componente */
+}
+
+

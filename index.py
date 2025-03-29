@@ -104,4 +104,6 @@ def update_estagiarios_graph(cargo, nivel):
     fig1_estagiarios, fig2_estagiarios, fig3_estagiarios = create_estagiarios_figure(cargo, nivel)
     return fig1_estagiarios, fig2_estagiarios, fig3_estagiarios
 
-
+# Rodar o servidor
+if __name__ == '__main__':
+    app.run(debug=True)

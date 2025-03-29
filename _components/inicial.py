@@ -1,6 +1,6 @@
 from dash import dcc, html
 import dash_bootstrap_components as dbc
-from app import app
+from index import app
 
 # Layout do aplicativo inicial
 app.layout = dbc.Row([

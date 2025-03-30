@@ -1,9 +1,8 @@
 from dash import dcc, html
 import dash_bootstrap_components as dbc
-from app import app
 
 # Layout do aplicativo inicial
-app.layout = dbc.Row([
+inicial_layout = dbc.Row([
     dbc.Col([ 
         dbc.Card([ 
             html.Img(src="assets/LOPES CONSULTORIA.png", style={"width": "100%"}),

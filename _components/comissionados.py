@@ -2,7 +2,6 @@ from dash import dcc, html, Input, Output
 import plotly.express as px
 import pandas as pd  # Para manipulação dos dados
 import dash_bootstrap_components as dbc
-from app import app
 
 # Carregar os dados da planilha fora da função para ser acessível globalmente
 file_path = 'dataset/Planilha de cargos - CMVC.xlsx'  # Caminho do arquivo carregado

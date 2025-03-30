@@ -6,7 +6,7 @@ from _components.comissionados import create_comissionados_figure, comissionados
 from _components.inativos import create_inativos_figure, inativos_layout
 from _components.agentes_politicos import create_agentes_figure, agentes_politicos_layout
 from _components.estagiarios import create_estagiarios_figure, estagiarios_layout
-from _components.inicial import app as inicial_app
+from _components.inicial import inicial_layout
 
 # Criação da instância do Dash e do servidor
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.MINTY])
@@ -16,7 +16,7 @@ app.config.suppress_callback_exceptions = True
 # Layout principal com duas colunas: esquerda (card) e direita (conteúdo dinâmico)
 app.layout = dbc.Container([
     dbc.Row([
-        dbc.Col(inicial_app.layout, width=2),
+        dbc.Col(inicial_layout, width=2),
         dbc.Col(html.Div(id='dynamic-content'), width=10),
     ])
 ], fluid=True)
@@ -102,4 +102,4 @@ def update_estagiarios_graph(cargo, nivel):
 
 # Rodar o servidor com o servidor do app importado de app.py
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run(debug=True)

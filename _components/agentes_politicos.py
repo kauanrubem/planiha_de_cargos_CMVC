@@ -2,7 +2,6 @@ from dash import dcc, html, Input, Output
 import plotly.express as px
 import pandas as pd
 import dash_bootstrap_components as dbc
-from app import app
 
 # Carregando os dados da aba "Agentes Políticos"
 file_path = 'dataset/Planilha de cargos - CMVC.xlsx'

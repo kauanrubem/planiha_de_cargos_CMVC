@@ -27,7 +27,8 @@ def create_inativos_figure(cargo_selecionado=None, nivel_selecionado=None):
         title="Quantidade de Inativos por Cargo e Nível",
         labels={'Quantidade': 'Quantidade de Inativos'},
         color_discrete_sequence=px.colors.qualitative.Set2,
-        barmode='group'
+        barmode='group',
+        hover_data=['Nível']
     )
 
     # Gráfico 2: Aposentadoria/Pensão
@@ -47,7 +48,8 @@ def create_inativos_figure(cargo_selecionado=None, nivel_selecionado=None):
         title="Valores de Aposentadoria/Pensão por Cargo e Nível",
         labels={'Valor': 'Valor (R$)', 'Tipo de Benefício': 'Benefício'},
         color_discrete_sequence=px.colors.qualitative.Set2,
-        barmode='group'
+        barmode='group',
+        hover_data=['Nível']
     )
 
     return fig1_inativos, fig2_inativos
@@ -79,14 +81,17 @@ inativos_layout = dbc.Row([
         ]),
 
         dbc.Row([  
-            dbc.Col(dbc.Card(dbc.CardBody([ 
-                dcc.Graph(id='fig1_inativos', style={'height': '400px', 'width': '100%', 'padding': '0'})
-            ])), width=6),
+    dbc.Col(dbc.Card(dbc.CardBody([ 
+        dcc.Graph(id='fig2_inativos', style={'height': '400px', 'width': '100%', 'padding': '0'}),
+        html.Div(id='total-fig2-inativos', style={'marginTop': '10px', 'fontWeight': 'bold', 'width': '100%', 'display': 'flex','justifyContent': 'left', 'textAlign': 'left'})
+    ])), xs=12, md=6),
 
-            dbc.Col(dbc.Card(dbc.CardBody([ 
-                dcc.Graph(id='fig2_inativos', style={'height': '400px', 'width': '100%', 'padding': '0'})
-            ])), width=6),
-        ])
+    dbc.Col(dbc.Card(dbc.CardBody([ 
+        dcc.Graph(id='fig1_inativos', style={'height': '400px', 'width': '100%', 'padding': '0'}),
+        html.Div(id='total-fig1-inativos', style={'marginTop': '10px', 'fontWeight': 'bold', 'width': '100%', 'display': 'flex','justifyContent': 'left', 'textAlign': 'left'})
+    ])), xs=12, md=6),
+])
+
     ])
 ])
 

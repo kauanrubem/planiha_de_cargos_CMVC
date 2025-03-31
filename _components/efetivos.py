@@ -54,7 +54,8 @@ def create_efetivos_figure(cargo_selecionado=None, nivel_selecionado=None):
         title="Quantidade de Efetivos por Cargo e Nível",
         labels={'Quantidade': 'Quantidade de Efetivos'},
         color_discrete_sequence=px.colors.qualitative.Set2,
-        barmode='group'
+        barmode='group',
+        hover_data=['Nível']
     )
 
     # Ajuste para diminuir o tamanho dos nomes dos níveis na lateral do gráfico
@@ -76,7 +77,8 @@ def create_efetivos_figure(cargo_selecionado=None, nivel_selecionado=None):
         title="Salário Base e Salário Base Total por Cargo e Nível",
         labels={'Valor': 'Salário', 'Tipo de Salário': 'Tipo de Salário'},
         color_discrete_sequence=px.colors.qualitative.Set2,
-        barmode='group'
+        barmode='group',
+        hover_data=['Nível']
     )
 
     fig2_efetivos.update_layout(
@@ -119,7 +121,8 @@ def create_efetivos_figure(cargo_selecionado=None, nivel_selecionado=None):
         title="Valores das Categorias por Cargo e Nível",
         labels={'Valor': 'Valor da Categoria', 'Categoria': 'Categoria'},
         color_discrete_sequence=px.colors.qualitative.Set2,
-        barmode='group'
+        barmode='group',
+        hover_data=['Nível']
     )
 
     fig3_efetivos.update_layout(
@@ -147,7 +150,8 @@ def create_efetivos_figure(cargo_selecionado=None, nivel_selecionado=None):
         color='Tipo de Incentivo',
         title="Total de Incentivos por Cargo e Nível",
         labels={'Valor Total': 'Valor (R$)', 'Tipo de Incentivo': 'Tipo de Incentivo'},
-        color_discrete_sequence=px.colors.qualitative.Set2
+        color_discrete_sequence=px.colors.qualitative.Set2,
+        hover_data=['Nível']
     )
 
     fig4_efetivos.update_layout(
@@ -179,7 +183,8 @@ def create_efetivos_figure(cargo_selecionado=None, nivel_selecionado=None):
         title="Valores de Categorias Especiais por Cargo e Nível",
         labels={'Valor': 'Valor da Categoria', 'Categoria': 'Categoria Especial'},
         color_discrete_sequence=px.colors.qualitative.Set2,
-        barmode='group'
+        barmode='group',
+        hover_data=['Nível']
     )
 
     fig5_efetivos.update_layout(
@@ -212,7 +217,8 @@ def create_efetivos_figure(cargo_selecionado=None, nivel_selecionado=None):
         title="Valores de Fg (Comissões e Outros) por Cargo e Nível",
         labels={'Valor': 'Valor da Categoria', 'Categoria': 'Categoria Fg'},
         color_discrete_sequence=px.colors.qualitative.Set2,
-        barmode='group'
+        barmode='group',
+        hover_data=['Nível']
     )
 
     fig6_efetivos.update_layout(
@@ -229,7 +235,6 @@ efetivos_layout = dbc.Row([
         html.H1("Efetivos - Gráficos de Quantidade, Salário Base, Total e Categorias",
                 style={'text-align': 'center', 'font-size': '22px', 'margin-bottom': '20px'}),
 
-        # Dropdowns lado a lado
         dbc.Row([
             dbc.Col([ 
                 dcc.Dropdown(
@@ -249,31 +254,37 @@ efetivos_layout = dbc.Row([
             ], width=6)
         ]),
 
-        # Gráficos em cards separados
         dbc.Row([
-            dbc.Col(dbc.Card(dbc.CardBody([ 
-                dcc.Graph(id='fig1_efetivos', style={'height': '400px', 'width': '100%', 'padding': '0'})
-            ])), width=12),
+            dbc.Col(dbc.Card(dbc.CardBody([
+                dcc.Graph(id='fig2_efetivos', style={'height': '400px', 'width': '100%', 'padding': '0'}),
+                html.Div(id='total-fig2', style={'marginTop': '10px', 'fontWeight': 'bold', 'width': '100%', 'display': 'flex','justifyContent': 'left', 'textAlign': 'left'})
+            ])), xs=12, md=12),
 
-            dbc.Col(dbc.Card(dbc.CardBody([ 
-                dcc.Graph(id='fig2_efetivos', style={'height': '400px', 'width': '100%', 'padding': '0'})
-            ])), width=12),
+            dbc.Col(dbc.Card(dbc.CardBody([
+                dcc.Graph(id='fig1_efetivos', style={'height': '400px', 'width': '100%', 'padding': '0'}),
+                html.Div(id='total-fig1', style={'marginTop': '10px', 'fontWeight': 'bold', 'width': '100%', 'display': 'flex','justifyContent': 'left', 'textAlign': 'left'})
+            ])), xs=12, md=12),
 
-            dbc.Col(dbc.Card(dbc.CardBody([ 
-                dcc.Graph(id='fig3_efetivos', style={'height': '400px', 'width': '100%', 'padding': '0'})
-            ])), width=12),
+            dbc.Col(dbc.Card(dbc.CardBody([
+                dcc.Graph(id='fig3_efetivos', style={'height': '400px', 'width': '100%', 'padding': '0'}),
+                html.Div(id='total-fig3', style={'marginTop': '10px', 'fontWeight': 'bold', 'width': '100%', 'display': 'flex','justifyContent': 'left', 'textAlign': 'left'})
+            ])), xs=12, md=12),
 
-            dbc.Col(dbc.Card(dbc.CardBody([ 
-                dcc.Graph(id='fig4_efetivos', style={'height': '400px', 'width': '100%', 'padding': '0'})
-            ])), width=12),
+            dbc.Col(dbc.Card(dbc.CardBody([
+                dcc.Graph(id='fig4_efetivos', style={'height': '400px', 'width': '100%', 'padding': '0'}),
+                html.Div(id='total-fig4', style={'marginTop': '10px', 'fontWeight': 'bold', 'width': '100%', 'display': 'flex','justifyContent': 'left', 'textAlign': 'left'})
+            ])), xs=12, md=12),
 
-            dbc.Col(dbc.Card(dbc.CardBody([ 
-                dcc.Graph(id='fig5_efetivos', style={'height': '400px', 'width': '100%', 'padding': '0'})
-            ])), width=12),
+            dbc.Col(dbc.Card(dbc.CardBody([
+                dcc.Graph(id='fig5_efetivos', style={'height': '400px', 'width': '100%', 'padding': '0'}),
+                html.Div(id='total-fig5', style={'marginTop': '10px', 'fontWeight': 'bold', 'width': '100%', 'display': 'flex','justifyContent': 'left', 'textAlign': 'left'})
+            ])), xs=12, md=12),
 
-            dbc.Col(dbc.Card(dbc.CardBody([ 
-                dcc.Graph(id='fig6_efetivos', style={'height': '400px', 'width': '100%', 'padding': '0'})
-            ])), width=12),
+            dbc.Col(dbc.Card(dbc.CardBody([
+                dcc.Graph(id='fig6_efetivos', style={'height': '400px', 'width': '100%', 'padding': '0'}),
+                html.Div(id='total-fig6', style={'marginTop': '10px', 'fontWeight': 'bold', 'width': '100%', 'display': 'flex','justifyContent': 'left', 'textAlign': 'left'})
+            ])), xs=12, md=12),
         ])
     ])
 ])
+

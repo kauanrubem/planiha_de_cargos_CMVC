@@ -25,7 +25,8 @@ def create_agentes_figure(cargo_selecionado=None, nivel_selecionado=None):
         title='Quantidade de Agentes Políticos por Cargo e Nível',
         labels={'Quantidade': 'Quantidade'},
         color_discrete_sequence=px.colors.qualitative.Set2,
-        barmode='group'
+        barmode='group',
+        hover_data=['Nível']
     )
 
     # Gráfico 2 – Subsídio e Subsídio Total
@@ -41,7 +42,8 @@ def create_agentes_figure(cargo_selecionado=None, nivel_selecionado=None):
         title='Subsídio e Subsídio Total por Cargo e Nível',
         labels={'Valor': 'Valor (R$)', 'Tipo de Subsídio': 'Tipo'},
         color_discrete_sequence=px.colors.qualitative.Set2,
-        barmode='group'
+        barmode='group',
+        hover_data=['Nível']
     )
 
     return fig1_agentes, fig2_agentes
@@ -75,14 +77,17 @@ agentes_politicos_layout = dbc.Row([
 
         # Gráficos em cards separados com o estilo igual ao de efetivos.py
         dbc.Row([
-            dbc.Col(dbc.Card(dbc.CardBody([ 
-                dcc.Graph(id='fig1_agentes', style={'height': '400px', 'width': '100%', 'padding': '0'})
-            ])), width=6),
+    dbc.Col(dbc.Card(dbc.CardBody([ 
+        dcc.Graph(id='fig2_agentes', style={'height': '400px', 'width': '100%', 'padding': '0'}),
+        html.Div(id='total-fig2-agentes', style={'marginTop': '10px', 'fontWeight': 'bold', 'width': '100%', 'display': 'flex','justifyContent': 'left', 'textAlign': 'left'})
+    ])), xs=12, md=6),
 
-            dbc.Col(dbc.Card(dbc.CardBody([ 
-                dcc.Graph(id='fig2_agentes', style={'height': '400px', 'width': '100%', 'padding': '0'})
-            ])), width=6),
-        ])
+    dbc.Col(dbc.Card(dbc.CardBody([ 
+        dcc.Graph(id='fig1_agentes', style={'height': '400px', 'width': '100%', 'padding': '0'}),
+        html.Div(id='total-fig1-agentes', style={'marginTop': '10px', 'fontWeight': 'bold', 'width': '100%', 'display': 'flex','justifyContent': 'left', 'textAlign': 'left'})
+    ])), xs=12, md=6),
+])
+
     ])
 ])
 

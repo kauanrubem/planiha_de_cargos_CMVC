@@ -28,6 +28,7 @@ def create_estagiarios_figure(cargo_selecionado=None, nivel_selecionado=None):
         labels={'Quantidade': 'Quantidade'},
         barmode='group',
         color_discrete_sequence=px.colors.qualitative.Set2,
+        hover_data=['Nível']
     )
 
     # Gráfico 2: Bolsa Estágio e Bolsa Estágio Total
@@ -47,6 +48,7 @@ def create_estagiarios_figure(cargo_selecionado=None, nivel_selecionado=None):
         barmode='group',
         labels={'Valor': 'Valor (R$)', 'Tipo de Bolsa': 'Tipo'},
         color_discrete_sequence=px.colors.qualitative.Set2,
+        hover_data=['Nível']
     )
 
     # Gráfico 3: Auxílio Transporte e Auxílio Transporte Total
@@ -66,6 +68,7 @@ def create_estagiarios_figure(cargo_selecionado=None, nivel_selecionado=None):
         barmode='group',
         labels={'Valor': 'Valor (R$)', 'Tipo de Auxílio': 'Tipo'},
         color_discrete_sequence=px.colors.qualitative.Set2,
+        hover_data=['Nível']
     )
 
     return fig1, fig2, fig3
@@ -99,18 +102,22 @@ estagiarios_layout = dbc.Row([
 
         # Gráficos em cards separados com o estilo igual ao de efetivos.py
         dbc.Row([  
-            dbc.Col(dbc.Card(dbc.CardBody([ 
-                dcc.Graph(id='fig1_estagiarios', style={'height': '400px', 'width': '100%', 'padding': '0'})
-            ])), width=6),
+    dbc.Col(dbc.Card(dbc.CardBody([ 
+        dcc.Graph(id='fig2_estagiarios', style={'height': '400px', 'width': '100%', 'padding': '0'}),
+        html.Div(id='total-fig2-estagiarios', style={'marginTop': '10px', 'fontWeight': 'bold', 'width': '100%', 'display': 'flex','justifyContent': 'left', 'textAlign': 'left'})
+    ])), xs=12, md=6),
 
-            dbc.Col(dbc.Card(dbc.CardBody([ 
-                dcc.Graph(id='fig2_estagiarios', style={'height': '400px', 'width': '100%', 'padding': '0'})
-            ])), width=6),
+    dbc.Col(dbc.Card(dbc.CardBody([ 
+        dcc.Graph(id='fig1_estagiarios', style={'height': '400px', 'width': '100%', 'padding': '0'}),
+        html.Div(id='total-fig1-estagiarios', style={'marginTop': '10px', 'fontWeight': 'bold', 'width': '100%', 'display': 'flex','justifyContent': 'left', 'textAlign': 'left'})
+    ])), xs=12, md=6),
 
-            dbc.Col(dbc.Card(dbc.CardBody([ 
-                dcc.Graph(id='fig3_estagiarios', style={'height': '400px', 'width': '100%', 'padding': '0'})
-            ])), width=6),
-        ])
+    dbc.Col(dbc.Card(dbc.CardBody([ 
+        dcc.Graph(id='fig3_estagiarios', style={'height': '400px', 'width': '100%', 'padding': '0'}),
+        html.Div(id='total-fig3-estagiarios', style={'marginTop': '10px', 'fontWeight': 'bold', 'width': '100%', 'display': 'flex','justifyContent': 'left', 'textAlign': 'left'})
+    ])), xs=12, md=6),
+])
+
     ])
 ])
 

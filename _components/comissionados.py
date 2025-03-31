@@ -27,7 +27,8 @@ def create_comissionados_figure(cargo_selecionado=None, nivel_selecionado=None):
         title="Quantidade de Comissionados por Cargo e Nível",
         labels={'Quantidade': 'Quantidade de Comissionados'},
         color_discrete_sequence=px.colors.qualitative.Set2,
-        barmode='group'  # Barra lado a lado para Cargo e Nível
+        barmode='group',  # Barra lado a lado para Cargo e Nível
+        hover_data=['Nível']
     )
 
     # Reshaping dos dados para gráficos de Salário Base e Salário Base Total (Figura 2)
@@ -43,7 +44,8 @@ def create_comissionados_figure(cargo_selecionado=None, nivel_selecionado=None):
         title="Salário Base e Salário Base Total por Cargo e Nível",
         labels={'Valor': 'Salário', 'Tipo de Salário': 'Tipo de Salário'},
         color_discrete_sequence=px.colors.qualitative.Set2,  # 4 cores para 'Tipo de Salário'
-        barmode='group'  # Barra lado a lado para Salário Base e Salário Base Total
+        barmode='group',  # Barra lado a lado para Salário Base e Salário Base Total
+        hover_data=['Nível']
     )
 
     # Adiciona o gráfico para as novas categorias (Incentivos, Diárias, Retroativo, GCET, GAEL-EAP, etc.)
@@ -74,7 +76,8 @@ def create_comissionados_figure(cargo_selecionado=None, nivel_selecionado=None):
         title="Valores das Categorias por Cargo e Nível",
         labels={'Valor': 'Valor da Categoria', 'Categoria': 'Categoria'},
         color_discrete_sequence=px.colors.qualitative.Set2,  # 4 cores para as categorias
-        barmode='group'  # Barra lado a lado para as categorias
+        barmode='group',  # Barra lado a lado para as categorias
+        hover_data=['Nível']
     )
 
     # Novo gráfico para Fg 03: Comissões: Pres., Sec. e Diária
@@ -102,7 +105,8 @@ def create_comissionados_figure(cargo_selecionado=None, nivel_selecionado=None):
         title="Valores de Fg 03: Comissões: Pres., Sec. e Diária por Cargo e Nível",
         labels={'Valor': 'Valor da Categoria', 'Categoria': 'Categoria'},
         color_discrete_sequence=px.colors.qualitative.Set2,  # Cores para Fg 03 e Diária
-        barmode='group'  # Barra lado a lado para as categorias
+        barmode='group',  # Barra lado a lado para as categorias
+        hover_data=['Nível']
     )
 
     return fig1_comissionados, fig2_comissionados, fig3_comissionados, fig4_comissionados
@@ -114,7 +118,6 @@ comissionados_layout = dbc.Row([
         html.H1("Comissionados - Gráficos de Quantidade, Salário Base, Salário Base Total e Categorias", 
                 style={'font-size': '24px', 'text-align': 'center', 'margin-bottom': '20px'}), 
 
-        # Dropdowns lado a lado
         dbc.Row([ 
             dbc.Col([  
                 dcc.Dropdown(
@@ -136,25 +139,30 @@ comissionados_layout = dbc.Row([
             ], width=6),  
         ]),
 
-        # Gráficos em cards separados com o estilo igual ao de efetivos.py
         dbc.Row([  
             dbc.Col(dbc.Card(dbc.CardBody([ 
-                dcc.Graph(id='fig1_comissionados', style={'height': '400px', 'width': '100%', 'padding': '0'})
-            ])), width=12),
+                dcc.Graph(id='fig2_comissionados', style={'height': '400px', 'width': '100%', 'padding': '0'}),
+                html.Div(id='total-fig2-comissionados', style={'marginTop': '10px', 'fontWeight': 'bold', 'width': '100%', 'display': 'flex','justifyContent': 'left', 'textAlign': 'left'}
+)
+            ])), xs=12, md=12),
 
             dbc.Col(dbc.Card(dbc.CardBody([ 
-                dcc.Graph(id='fig2_comissionados', style={'height': '400px', 'width': '100%', 'padding': '0'})
-            ])), width=12),
+                dcc.Graph(id='fig1_comissionados', style={'height': '400px', 'width': '100%', 'padding': '0'}),
+                html.Div(id='total-fig1-comissionados', style={'marginTop': '10px', 'fontWeight': 'bold', 'width': '100%', 'display': 'flex','justifyContent': 'left', 'textAlign': 'left'})
+            ])), xs=12, md=12),
 
             dbc.Col(dbc.Card(dbc.CardBody([ 
-                dcc.Graph(id='fig3_comissionados', style={'height': '400px', 'width': '100%', 'padding': '0'})
-            ])), width=12),
+                dcc.Graph(id='fig3_comissionados', style={'height': '400px', 'width': '100%', 'padding': '0'}),
+                html.Div(id='total-fig3-comissionados', style={'marginTop': '10px', 'fontWeight': 'bold', 'width': '100%', 'display': 'flex','justifyContent': 'left', 'textAlign': 'left'})
+            ])), xs=12, md=12),
 
             dbc.Col(dbc.Card(dbc.CardBody([ 
-                dcc.Graph(id='fig4_comissionados', style={'height': '400px', 'width': '100%', 'padding': '0'})
-            ])), width=12),
+                dcc.Graph(id='fig4_comissionados', style={'height': '400px', 'width': '100%', 'padding': '0'}),
+                html.Div(id='total-fig4-comissionados', style={'marginTop': '10px', 'fontWeight': 'bold', 'width': '100%', 'display': 'flex','justifyContent': 'left', 'textAlign': 'left'})
+            ])), xs=12, md=12),
         ])
     ], sm=12, md=12) 
 ])
+
 
 

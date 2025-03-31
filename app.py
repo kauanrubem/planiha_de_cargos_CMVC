@@ -2,10 +2,10 @@ import dash
 import dash_bootstrap_components as dbc
 from dash import dcc, html, Input, Output
 from _components.efetivos import create_efetivos_figure, efetivos_layout
-from _components.comissionados import create_comissionados_figure, comissionados_layout
-from _components.inativos import create_inativos_figure, inativos_layout
-from _components.agentes_politicos import create_agentes_figure, agentes_politicos_layout
-from _components.estagiarios import create_estagiarios_figure, estagiarios_layout
+from _components.comissionados import create_comissionados_figure, comissionados_layout, df_comissionados
+from _components.inativos import create_inativos_figure, inativos_layout, df_inativos
+from _components.agentes_politicos import create_agentes_figure, agentes_politicos_layout, df_agentes
+from _components.estagiarios import create_estagiarios_figure, estagiarios_layout, df_estagiarios
 from _components.inicial import inicial_layout
 
 # Criação da instância do Dash e do servidor
@@ -16,8 +16,8 @@ app.config.suppress_callback_exceptions = True
 # Layout principal com duas colunas: esquerda (card) e direita (conteúdo dinâmico)
 app.layout = dbc.Container([
     dbc.Row([
-        dbc.Col(inicial_layout, width=2),
-        dbc.Col(html.Div(id='dynamic-content'), width=10),
+        dbc.Col(inicial_layout, xs=12, md=3, lg=2),
+        dbc.Col(html.Div(id='dynamic-content'), xs=12, md=9, lg=10),
     ])
 ], fluid=True)
 
@@ -39,66 +39,149 @@ def update_layout(selected_value):
         return estagiarios_layout
 
 # Callback dos gráficos de efetivos
+# Callback dos gráficos de efetivos + totais dinâmicos
 @app.callback(
     [Output("fig1_efetivos", "figure"),
      Output("fig2_efetivos", "figure"),
      Output("fig3_efetivos", "figure"),
      Output("fig4_efetivos", "figure"),
      Output("fig5_efetivos", "figure"),
-     Output("fig6_efetivos", "figure")],
+     Output("fig6_efetivos", "figure"),
+     Output("total-fig1", "children"),
+     Output("total-fig2", "children"),
+     Output("total-fig3", "children"),
+     Output("total-fig4", "children"),
+     Output("total-fig5", "children"),
+     Output("total-fig6", "children")],
     [Input('dropdown-cargo', 'value'),
      Input('dropdown-nivel', 'value')]
 )
-def update_graph(cargo_selecionado, nivel_selecionado):
-    fig1_efetivos, fig2_efetivos, fig3_efetivos, fig4_efetivos, fig5_efetivos, fig6_efetivos = create_efetivos_figure(cargo_selecionado, nivel_selecionado)
-    return fig1_efetivos, fig2_efetivos, fig3_efetivos, fig4_efetivos, fig5_efetivos, fig6_efetivos
+def update_graph_and_totals(cargo, nivel):
+    from _components.efetivos import df_efetivos, abreviacoes
+
+    figs = create_efetivos_figure(cargo, nivel)
+
+    df = df_efetivos.copy()
+    if cargo:
+        cargo_abrev = abreviacoes.get(cargo, cargo)
+        df = df[df["Cargo Abreviado"] == cargo_abrev]
+    if nivel:
+        df = df[df["Nível"] == nivel]
+
+    total1 = f"Total de Efetivos: {df['Quantidade'].sum()} servidores"
+    total2 = f"Valor Total do Salário Base: R$ {df['Salário Base Total'].sum():,.2f}"
+    total3 = f"Valor Total das Categorias (Complementos): R$ {df[['Quinquênio','Vencimento Complementar','Periculosidade','Horas Extras 50%','Horas Extras 100%','Fiscal I','Diária','Estabilidade Econômica']].sum().sum():,.2f}"
+    total4 = f"Valor Total de Incentivos: R$ {df[['Incentivo Nível Superior','Incentivo De Pós-Graduação','Incentivo - Nível Médio']].sum().sum():,.2f}"
+    total5 = f"Valor Total de Categorias Especiais: R$ {df[['Aprimoramento Profissional','GCET','GAEL-EAP','GAEL - GESTOR DE CONTRATOS','GAEL - AGENTE DE CONTRATACAO']].sum().sum():,.2f}"
+    total6 = f"Valor Total de Comissões (FGs): R$ {df[['Fg 01: Integrante De Comissao','Fg 03: Comissões: Pres., Sec.','Fg 04: Servicos De Apoio / Sup','Fg 05: Serv. Contante Locomoca','Fg 06: Atividades Supervisão','Fg 09: Fiscal De Contratos','Fg 10: Serv. Externo']].sum().sum():,.2f}"
+
+    return (*figs, total1, total2, total3, total4, total5, total6)
 
 # Callback dos gráficos de comissionados
+
+
 @app.callback(
     [Output("fig1_comissionados", "figure"),
      Output("fig2_comissionados", "figure"),
      Output("fig3_comissionados", "figure"),
-     Output("fig4_comissionados", "figure")],
+     Output("fig4_comissionados", "figure"),
+     Output("total-fig1-comissionados", "children"),
+     Output("total-fig2-comissionados", "children"),
+     Output("total-fig3-comissionados", "children"),
+     Output("total-fig4-comissionados", "children")],
     [Input('dropdown-cargo', 'value'),
      Input('dropdown-nivel', 'value')]
 )
-def update_comissionados_graph(cargo_selecionado, nivel_selecionado):
-    fig1_comissionados, fig2_comissionados, fig3_comissionados, fig4_comissionados = create_comissionados_figure(cargo_selecionado, nivel_selecionado)
-    return fig1_comissionados, fig2_comissionados, fig3_comissionados, fig4_comissionados
+def update_comissionados_graph_and_totals(cargo, nivel):
+    figs = create_comissionados_figure(cargo, nivel)
+
+    df = df_comissionados.copy()
+    if cargo:
+        df = df[df["Cargo"] == cargo]
+    if nivel:
+        df = df[df["Nível"] == nivel]
+
+    total1 = f"Total de Comissionados: {df['Quantidade'].sum()} servidores"
+    total2 = f"Valor Total do Salário Base: R$ {df['Salário Base Total'].sum():,.2f}"
+    total3 = f"Valor Total das Categorias: R$ {df[['Incentivo Nível Superior','Incentivo De Pós-Graduação','Incentivo - Nível Médio','Diária','Retroativo De Graduação/Pós','GCET','GAEL-EAP']].sum().sum():,.2f}"
+    total4 = f"Valor Total de Fg 03 e Diária: R$ {df[['Fg 03: Comissões: Pres., Sec.','Diária']].sum().sum():,.2f}"
+
+    return (*figs, total1, total2, total3, total4)
 
 # Callback dos gráficos de inativos
+
+
 @app.callback(
     [Output("fig1_inativos", "figure"),
-     Output("fig2_inativos", "figure")],
+     Output("fig2_inativos", "figure"),
+     Output("total-fig1-inativos", "children"),
+     Output("total-fig2-inativos", "children")],
     [Input('dropdown-cargo-inativos', 'value'),
      Input('dropdown-nivel-inativos', 'value')]
 )
-def update_inativos_graph(cargo, nivel):
-    fig1_inativos, fig2_inativos = create_inativos_figure(cargo, nivel)
-    return fig1_inativos, fig2_inativos
+def update_inativos_graph_and_totals(cargo, nivel):
+    figs = create_inativos_figure(cargo, nivel)
+
+    df = df_inativos.copy()
+    if cargo:
+        df = df[df["Cargo"] == cargo]
+    if nivel:
+        df = df[df["Nível"] == nivel]
+
+    total1 = f"Total de Inativos: {df['Quantidade'].sum()} pessoas"
+    total2 = f"Valor Total da Aposentadoria/Pensão: R$ {df['Aposentadoria/Pensão por morte Total'].sum():,.2f}"
+
+    return (*figs, total1, total2)
+
 
 # Callback dos gráficos de agentes políticos
 @app.callback(
     [Output("fig1_agentes", "figure"),
-     Output("fig2_agentes", "figure")],
+     Output("fig2_agentes", "figure"),
+     Output("total-fig1-agentes", "children"),
+     Output("total-fig2-agentes", "children")],
     [Input('dropdown-cargo-agentes', 'value'),
      Input('dropdown-nivel-agentes', 'value')]
 )
-def update_agentes_graph(cargo, nivel):
-    fig1_agentes, fig2_agentes = create_agentes_figure(cargo, nivel)
-    return fig1_agentes, fig2_agentes
+def update_agentes_graph_and_totals(cargo, nivel):
+    figs = create_agentes_figure(cargo, nivel)
+
+    df = df_agentes.copy()
+    if cargo:
+        df = df[df["Cargo"] == cargo]
+    if nivel:
+        df = df[df["Nível"] == nivel]
+
+    total1 = f"Total de Agentes Políticos: {df['Quantidade'].sum()} pessoas"
+    total2 = f"Valor Total do Subsídio: R$ {df['Subsídio Total'].sum():,.2f}"
+    return (*figs, total1, total2)
+
 
 # Callback dos gráficos de estagiários
 @app.callback(
     [Output("fig1_estagiarios", "figure"),
      Output("fig2_estagiarios", "figure"),
-     Output("fig3_estagiarios", "figure")],
+     Output("fig3_estagiarios", "figure"),
+     Output("total-fig1-estagiarios", "children"),
+     Output("total-fig2-estagiarios", "children"),
+     Output("total-fig3-estagiarios", "children")],
     [Input('dropdown-cargo-estagiarios', 'value'),
      Input('dropdown-nivel-estagiarios', 'value')]
 )
-def update_estagiarios_graph(cargo, nivel):
-    fig1_estagiarios, fig2_estagiarios, fig3_estagiarios = create_estagiarios_figure(cargo, nivel)
-    return fig1_estagiarios, fig2_estagiarios, fig3_estagiarios
+def update_estagiarios_graph_and_totals(cargo, nivel):
+    figs = create_estagiarios_figure(cargo, nivel)
+
+    df = df_estagiarios.copy()
+    if cargo:
+        df = df[df["Cargo"] == cargo]
+    if nivel:
+        df = df[df["Nível"] == nivel]
+
+    total1 = f"Total de Estagiários: {df['Quantidade'].sum()} pessoas"
+    total2 = f"Valor Total da Bolsa Estágio: R$ {df['Bolsa Estagio Total'].sum():,.2f}"
+    total3 = f"Valor Total do Auxílio Transporte: R$ {df['Auxilio Transporte Total'].sum():,.2f}"
+
+    return (*figs, total1, total2, total3)
 
 # Rodar o servidor com o servidor do app importado de app.py
 if __name__ == '__main__':

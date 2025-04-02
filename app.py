@@ -1,7 +1,7 @@
 import dash
 import dash_bootstrap_components as dbc
 from dash import dcc, html, Input, Output
-from _components.efetivos import create_efetivos_figure, efetivos_layout
+from _components.efetivos import create_efetivos_figure, efetivos_layout, df_efetivos
 from _components.comissionados import create_comissionados_figure, comissionados_layout, df_comissionados
 from _components.inativos import create_inativos_figure, inativos_layout, df_inativos
 from _components.agentes_politicos import create_agentes_figure, agentes_politicos_layout, df_agentes
@@ -37,6 +37,81 @@ def update_layout(selected_value):
         return agentes_politicos_layout
     elif selected_value == "Estágiarios":
         return estagiarios_layout
+    
+    # Callback para atualizar as opções do dropdown de nível com base no cargo selecionado
+@app.callback(
+    Output('dropdown-nivel', 'options'),  # Atualiza as opções do dropdown de nível
+    Input('dropdown-cargo', 'value')  # Quando o cargo for alterado
+)
+def update_nivel_options(cargo_selecionado):
+    # Filtra os dados de acordo com o cargo selecionado
+    if cargo_selecionado:
+        df_filtrado = df_efetivos[df_efetivos['Cargo'] == cargo_selecionado]
+        niveis = df_filtrado['Nível'].unique()  # Obtém os níveis disponíveis para o cargo
+    else:
+        niveis = df_efetivos['Nível'].unique()  # Se nenhum cargo for selecionado, exibe todos os níveis
+
+    # Atualiza as opções do dropdown de nível
+    return [{'label': nivel, 'value': nivel} for nivel in niveis]
+
+# Callback para atualizar o dropdown de nível dos Comissionados
+@app.callback(
+    Output('dropdown-nivel-comissionados', 'options'),
+    Input('dropdown-cargo-comissionados', 'value')
+)
+def update_nivel_comissionados(cargo_selecionado):
+    if cargo_selecionado:
+        df_filtrado = df_comissionados[df_comissionados['Cargo'] == cargo_selecionado]
+        niveis = df_filtrado['Nível'].unique()
+    else:
+        niveis = df_comissionados['Nível'].unique()
+
+    return [{'label': nivel, 'value': nivel} for nivel in niveis]
+
+
+# Callback para atualizar o dropdown de nível dos Inativos
+@app.callback(
+    Output('dropdown-nivel-inativos', 'options'),
+    Input('dropdown-cargo-inativos', 'value')
+)
+def update_nivel_inativos(cargo_selecionado):
+    if cargo_selecionado:
+        df_filtrado = df_inativos[df_inativos['Cargo'] == cargo_selecionado]
+        niveis = df_filtrado['Nível'].unique()
+    else:
+        niveis = df_inativos['Nível'].unique()
+
+    return [{'label': nivel, 'value': nivel} for nivel in niveis]
+
+
+# Callback para atualizar o dropdown de nível dos Agentes Políticos
+@app.callback(
+    Output('dropdown-nivel-agentes', 'options'),
+    Input('dropdown-cargo-agentes', 'value')
+)
+def update_nivel_agentes(cargo_selecionado):
+    if cargo_selecionado:
+        df_filtrado = df_agentes[df_agentes['Cargo'] == cargo_selecionado]
+        niveis = df_filtrado['Nível'].unique()
+    else:
+        niveis = df_agentes['Nível'].unique()
+
+    return [{'label': nivel, 'value': nivel} for nivel in niveis]
+
+
+# Callback para atualizar o dropdown de nível dos Estagiários
+@app.callback(
+    Output('dropdown-nivel-estagiarios', 'options'),
+    Input('dropdown-cargo-estagiarios', 'value')
+)
+def update_nivel_estagiarios(cargo_selecionado):
+    if cargo_selecionado:
+        df_filtrado = df_estagiarios[df_estagiarios['Cargo'] == cargo_selecionado]
+        niveis = df_filtrado['Nível'].unique()
+    else:
+        niveis = df_estagiarios['Nível'].unique()
+
+    return [{'label': nivel, 'value': nivel} for nivel in niveis]
 
 # Callback dos gráficos de efetivos
 # Callback dos gráficos de efetivos + totais dinâmicos
@@ -89,8 +164,8 @@ def update_graph_and_totals(cargo, nivel):
      Output("total-fig2-comissionados", "children"),
      Output("total-fig3-comissionados", "children"),
      Output("total-fig4-comissionados", "children")],
-    [Input('dropdown-cargo', 'value'),
-     Input('dropdown-nivel', 'value')]
+    [Input('dropdown-cargo-comissionados', 'value'),
+     Input('dropdown-nivel-comissionados', 'value')]
 )
 def update_comissionados_graph_and_totals(cargo, nivel):
     figs = create_comissionados_figure(cargo, nivel)

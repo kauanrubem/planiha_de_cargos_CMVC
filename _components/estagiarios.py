@@ -35,7 +35,7 @@ def create_estagiarios_figure(cargo_selecionado=None, nivel_selecionado=None):
     df_bolsa = pd.melt(
         df_grouped,
         id_vars=['Cargo', 'Nível'],
-        value_vars=['Bolsa Estagio', 'Bolsa Estagio Total'],
+        value_vars=['Bolsa Estagio'],
         var_name='Tipo de Bolsa',
         value_name='Valor'
     )
@@ -120,4 +120,3 @@ estagiarios_layout = dbc.Row([
 
     ])
 ])
-

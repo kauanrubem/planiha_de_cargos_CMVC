@@ -35,7 +35,7 @@ def create_inativos_figure(cargo_selecionado=None, nivel_selecionado=None):
     df_melted = pd.melt(
         df_grouped,
         id_vars=['Cargo', 'Nível'],
-        value_vars=['Aposentadoria/Pensão por morte', 'Aposentadoria/Pensão por morte Total'],
+        value_vars=['Aposentadoria/Pensão por morte'],
         var_name='Tipo de Benefício',
         value_name='Valor'
     )
@@ -94,5 +94,4 @@ inativos_layout = dbc.Row([
 
     ])
 ])
-
 

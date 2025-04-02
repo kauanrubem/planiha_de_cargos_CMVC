@@ -32,7 +32,7 @@ def create_comissionados_figure(cargo_selecionado=None, nivel_selecionado=None):
     )
 
     # Reshaping dos dados para gráficos de Salário Base e Salário Base Total (Figura 2)
-    df_melted = pd.melt(df_grouped, id_vars=['Cargo', 'Nível'], value_vars=['Salário Base', 'Salário Base Total'], 
+    df_melted = pd.melt(df_grouped, id_vars=['Cargo', 'Nível'], value_vars=['Salário Base'], 
                         var_name='Tipo de Salário', value_name='Valor')
 
     # Criar o gráfico de barras para Salário Base e Salário Base Total (Figura 2)
@@ -121,7 +121,7 @@ comissionados_layout = dbc.Row([
         dbc.Row([ 
             dbc.Col([  
                 dcc.Dropdown(
-                    id='dropdown-cargo',
+                    id='dropdown-cargo-comissionados',
                     options=[{'label': cargo, 'value': cargo} for cargo in df_comissionados['Cargo'].unique()],
                     placeholder="Selecione um Cargo",
                     value='ASSESSOR PARLAMENTAR',
@@ -131,7 +131,7 @@ comissionados_layout = dbc.Row([
 
             dbc.Col([  
                 dcc.Dropdown(
-                    id='dropdown-nivel',    
+                    id='dropdown-nivel-comissionados',    
                     options=[{'label': nivel, 'value': nivel} for nivel in df_comissionados['Nível'].unique()],
                     placeholder="Selecione um Nível",
                     style={'margin-bottom': '10px'}
@@ -163,6 +163,5 @@ comissionados_layout = dbc.Row([
         ])
     ], sm=12, md=12) 
 ])
-
 
 

@@ -31,7 +31,7 @@ def create_agentes_figure(cargo_selecionado=None, nivel_selecionado=None):
 
     # Gráfico 2 – Subsídio e Subsídio Total
     df_melted = pd.melt(df_grouped, id_vars=['Cargo', 'Nível'],
-                        value_vars=['Subsídio', 'Subsídio Total'],
+                        value_vars=['Subsídio'],
                         var_name='Tipo de Subsídio', value_name='Valor')
 
     fig2_agentes = px.bar(
@@ -90,5 +90,4 @@ agentes_politicos_layout = dbc.Row([
 
     ])
 ])
-
 

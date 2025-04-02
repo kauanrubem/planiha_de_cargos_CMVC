@@ -66,7 +66,7 @@ def create_efetivos_figure(cargo_selecionado=None, nivel_selecionado=None):
     )
 
     # Reshaping dos dados para gráficos de Salário Base e Salário Base Total (Figura 2)
-    df_melted = pd.melt(df_grouped, id_vars=['Cargo Abreviado', 'Nível'], value_vars=['Salário Base', 'Salário Base Total'], 
+    df_melted = pd.melt(df_grouped, id_vars=['Cargo Abreviado', 'Nível'], value_vars=['Salário Base'], 
                         var_name='Tipo de Salário', value_name='Valor')
 
     fig2_efetivos = px.bar(
@@ -287,4 +287,3 @@ efetivos_layout = dbc.Row([
         ])
     ])
 ])
-

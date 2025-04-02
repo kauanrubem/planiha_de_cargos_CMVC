@@ -30,4 +30,52 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para destacar o componente */
 }
 
+/* Desktop (padrão): sidebar lateral */
+/* Desktop: sidebar lateral normal */
+#sidebar {
+  display: block;
+  position: relative;
+}
+
+/* Celular: barra horizontal fixa no topo */
+@media screen and (max-width: 768px) {
+  #sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      z-index: 1000;
+      background-color: white;
+      padding: 10px 15px;
+      border-bottom: 1px solid #ccc;
+  }
+
+  .fixed-radio-items {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 10px;
+  }
+
+  .fixed-radio-items img {
+      display: none; /* esconde as imagens para economizar espaço */
+  }
+
+  #main_variable label {
+      margin-right: 10px;
+      font-size: 13px;
+  }
+
+  #dynamic-content {
+      margin-top: 100px;  /* espaço para a barra no topo */
+      width: 100%;
+  }
+}
+
+
+
+
+
 
